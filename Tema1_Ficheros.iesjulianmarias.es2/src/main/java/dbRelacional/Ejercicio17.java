@@ -16,7 +16,9 @@ public class Ejercicio17 {
 	
 	
 	public static void main(String[] args) {
-		establecerConexion_MySQL();
+		//establecerConexion_MySQL()
+	    establecerConexion_SQLite();
+
 //		System.out.println(anadirDpto("Ventas", "Sevilla")!=0?"El departamento se añadió con éxito": "El departamento NO se añadió");
 //		System.out.println(anadirDpto("Fabricación", "Sevilla")!=0?"El departamento se añadió con éxito": "El departamento NO se añadió");
 //		
@@ -26,14 +28,14 @@ public class Ejercicio17 {
 //		listarDptos();
 //		System.out.println(modificarDpto(2, "RRHH", "Burgos")!=0?"El departamento se modificó con éxito": "El departamento NO se MODIFICO");
 //		listarDptos();
-		//anadirEmpleado("Miguel", "Alcantara", "Gómez", "Ventas");
-		System.out.println("Añado dpto");
-		anadirEmpleado("Julia", "Cantara", "Pérez", "Propaganda");
-		System.out.println("Asigno dpto existente");
-		anadirEmpleado("Julia", "Cantara", "Pérez", "Sanciones");
-		System.out.println("No hago nada");
-		anadirEmpleado("Andrea", "Carrasco", "Pérez", "Sanciones2");
-		
+		//anadirEmpleado("Miguel", "Alcantara", "Gómez", "Marketing");
+	    System.out.println("Añado dpto");
+	    anadirEmpleado("Julia", "Cantara", "Pérez", "Propaganda");
+	    System.out.println("Asigno dpto existente");
+	    anadirEmpleado("Andrea", "Carrasco", "Pérez", "Sanciones");
+	    System.out.println("No hago nada");
+	    anadirEmpleado("Andrea", "Carrasco", "Pérez", "Sanciones2");
+
 //		listarDptos();
 //		System.out.println(borrarDpto(10)!=0?"El departamento se eliminó con éxito": "El departamento NO se ELIMINO");
 //		System.out.println(borrarDpto(100)!=0?"El departamento se eliminó con éxito": "El departamento NO se ELIMINO");
@@ -41,7 +43,15 @@ public class Ejercicio17 {
 //		System.out.println(modificarDpto(20, "RRHH", "Burgos")!=0?"El departamento se modificó con éxito": "El departamento NO se MODIFICO");
 //		System.out.println(modificarDpto(200, "RRHH", "Burgos")!=0?"El departamento se modificó con éxito": "El departamento NO se MODIFICO");
 //		listarDptos();
-		anadirEmpleado("Manuel", "García", "López", "RRHH");
+//		anadirEmpleado("Manuel", "García", "López", "RRHH");
+//	    anadirDpto("Ventas", "Sevilla");
+//	    anadirDpto("Fabricación", "Madrid");
+	    
+//	    
+//	    anadirEmpleado("Andrea", "Alcantara", "Gómez", "Sanciones2");
+//	    anadirEmpleado("Julia", "Cantara", "Pérez", "Fabricación");
+	    listarEmpleados();
+	    listarDptos();
 		cerrarConexion();
 	}
 
@@ -163,6 +173,19 @@ public class Ejercicio17 {
 			e.printStackTrace();
 		}
 	}
+	private static void listarEmpleados() {
+	    try {
+	        PreparedStatement sentencia = con.prepareStatement("SELECT * FROM empleados");
+	        ResultSet rS = sentencia.executeQuery();
+	        while (rS.next()) {
+	            System.out.println(rS.getInt(1) + " " + rS.getString(2) + " " +
+	                               rS.getString(3) + " " + rS.getString(4) + " - Departamento: " + rS.getInt(5));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 
 	private static void cerrarConexion() {
 		try {
@@ -184,18 +207,37 @@ public class Ejercicio17 {
 	}
 	
 	private static void establecerConexion_SQLite() {
-		//TODO faltaria ejecuta creación de tabla de empleados
-		try {
-			Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:"+Utilidades.RUTA+DB);
-			PreparedStatement sentencia = con.prepareStatement(
-					"CREATE TABLE IF NOT EXISTS departamentos (dept_no INTEGER PRIMARY KEY AUTOINCREMENT , dnombre VARCHAR(15), loc VARCHAR(15));" );
-			sentencia.executeUpdate();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    try {
+	        Class.forName("org.sqlite.JDBC");
+	        con = DriverManager.getConnection("jdbc:sqlite:" + Utilidades.RUTA + DB);
+
+	        // Crear tabla departamentos
+	        PreparedStatement sentenciaDeptos = con.prepareStatement(
+	            "CREATE TABLE IF NOT EXISTS departamentos (" +
+	            "dept_no INTEGER PRIMARY KEY AUTOINCREMENT, " +
+	            "dnombre VARCHAR(15), " +
+	            "loc VARCHAR(15));"
+	        );
+	        sentenciaDeptos.executeUpdate();
+
+	        // Crear tabla empleados con una clave foránea para departamento
+	        PreparedStatement sentenciaEmpleados = con.prepareStatement(
+	            "CREATE TABLE IF NOT EXISTS empleados (" +
+	            "emp_no INTEGER PRIMARY KEY AUTOINCREMENT, " +
+	            "nombre VARCHAR(15), " +
+	            "apellido1 VARCHAR(15), " +
+	            "apellido2 VARCHAR(15), " +
+	            "departamento INTEGER, " +
+	            "FOREIGN KEY(departamento) REFERENCES departamentos(dept_no));"
+	        );
+	        sentenciaEmpleados.executeUpdate();
+
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 
 }
