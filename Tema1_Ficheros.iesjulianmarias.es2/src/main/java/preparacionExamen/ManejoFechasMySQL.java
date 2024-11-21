@@ -33,7 +33,7 @@ public class ManejoFechasMySQL {
 		try {
 			establecerConexion_MySQL();
 			wb = new XSSFWorkbook(new FileInputStream(new File(Utilidades.RUTA+DOCTRABAJO_IN)));
-			//copiaFechasExcelMySQL();
+			copiaFechasExcelMySQL();
 			Set<String> provinciasSD = buscarProvinciasSinRepetir();
 			for(String provinciaSD: provinciasSD) {
 				System.out.println(provinciaSD);
