@@ -14,6 +14,14 @@ public class App {
         Controlador controlador = new Controlador();
         controlador.iniciar();
 
-
+        /*
+         * Meter datos del excel ictus a la tabla SQL
+         * Cargar datos comboboxaño con fecha_ingreso
+         * Cargar combobox ssexo con enumeracion
+         * 
+         * boton consultar casos que dice el total de casos del año y del sexo
+         * 
+         * Boton generar XML con JAXB
+         */
 	}
 }

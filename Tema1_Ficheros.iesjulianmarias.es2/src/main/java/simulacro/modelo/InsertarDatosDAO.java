@@ -29,4 +29,15 @@ public class InsertarDatosDAO {
             stmt.executeUpdate();
         }
     }
+    public void insertarIctus(String fechaIngreso, int idHospital, int edad, String sexo, Connection conexion) throws SQLException {
+        String query = "INSERT INTO ictus (fecha_ingreso, hospital, edad, sexo) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement stmt = conexion.prepareStatement(query)) {
+            stmt.setString(1, fechaIngreso);
+            stmt.setInt(2, idHospital);
+            stmt.setInt(3, edad);
+            stmt.setString(4, sexo);
+            stmt.executeUpdate();
+        }
+    }
+
 }

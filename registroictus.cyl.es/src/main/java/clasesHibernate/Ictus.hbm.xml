@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 12 dic 2024 8:47:50 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class catalog="ictussacyl" name="clasesHibernate.Ictus" optimistic-lock="none" table="ictus">
+        <id name="idIctus" type="java.lang.Integer">
+            <column name="id_ictus"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="clasesHibernate.Hospitales" fetch="select" name="hospitales">
+            <column name="hospital"/>
+        </many-to-one>
+        <property name="fechaIngreso" type="date">
+            <column length="10" name="fecha_ingreso"/>
+        </property>
+        <property name="edad" type="java.lang.Integer">
+            <column name="edad"/>
+        </property>
+        <property name="sexo" type="string">
+            <column length="10" name="sexo"/>
+        </property>
+    </class>
+</hibernate-mapping>
