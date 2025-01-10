@@ -2,15 +2,19 @@ package Modelo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
 import com.mongodb.ServerApi;
 import com.mongodb.ServerApiVersion;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -29,7 +33,7 @@ public class Modelo {
 		conexionLocal();
 //		conexionRemota();
 		ArrayList<String> personajes = new ArrayList<String>(Arrays.asList("Sancho Panza","Don Quijote"));
-		anadirLibro("Don Quijote", "novela","Miguel Cervantes","Español",1946,personajes);
+		
 //		 Listar todos
 		 mostrarLibros();
 //		// Mostrar libros por género
@@ -55,82 +59,76 @@ public class Modelo {
 		cliente.close();
 	}
 
-	private static void anadirLibro(String titulo, String genero, String nombreAutor, String nacionalidadAutor, int nacimientoAutor, ArrayList<String> personajes) {
-		// TODO Auto-generated method stub
-		Document doc = new Document()
-				.append("titulo",titulo)
-				.append("genero",genero)
-				.append("autor", nombreAutor)
-				.append("personajes", personajes);
+	private static void anadirLibroAutorReferenciado(String titulo, String genero, String nombreAutor, String nacionalidadAutor, int nacimientoAutor, ArrayList<String> personajes) {
+		Document docAutor = null;
+		ObjectId id;
+		docAutor = db.getCollection("autores").find(Filters.and(
+				Filters.eq("nombre", nombreAutor), 
+				Filters.eq("nacionalidad", nacionalidadAutor), 
+				Filters.eq("nacimiento", nacimientoAutor))).first();
 		
-		db.getCollection("libros").insertOne(doc);
+		// Si no existe el autor lo añade en la colección autores
+		if (docAutor==null) {
+			docAutor = new Document()
+					.append("nacimiento", nacimientoAutor)
+					.append("nacionalidad", nacionalidadAutor)
+					.append("nombre", nombreAutor);
+			db.getCollection("autores").insertOne(docAutor);
+		}
+		id = docAutor.getObjectId("_id");
+		
+		
+		Document docLibro = new Document()
+				.append("titulo", titulo)
+				.append("genero", genero)
+				.append("autor", id) 
+				.append("personajes", personajes);
+		db.getCollection("libros").insertOne(docLibro);
 	}
-
-    // Métodos mostrarLibros
+	
 	private static void mostrarLibros() {
-	    MongoCollection<Document> libros = db.getCollection("libros");
-	    for (Document libro : libros.find()) {
-	        imprimirLibro(libro);
-	    }
+		FindIterable<Document> fitL = db.getCollection("libros").find();
+		Iterator<Document> itL = fitL.iterator();
+		while(itL.hasNext()) {
+			System.out.println(itL.next().toString());
+		}
 	}
-
+	
 	private static void mostrarLibros(String genero) {
-	    MongoCollection<Document> libros = db.getCollection("libros");
-	    for (Document libro : libros.find(Filters.eq("genero", genero))) {
-	        imprimirLibro(libro);
-	    }
+		FindIterable<Document> fitL = db.getCollection("libros").find(Filters.eq("genero", genero));
+		Iterator<Document> itL = fitL.iterator();
+		while(itL.hasNext()) {
+			System.out.println(itL.next().toString());
+		}
 	}
-
-	private static void mostrarLibrosPorAutor(String autor) {
-	    MongoCollection<Document> libros = db.getCollection("libros");
-	    for (Document libro : libros.find(Filters.eq("autor", autor))) {
-	        imprimirLibro(libro);
-	    }
+	
+	private static void mostrarLibros(String titulo, String nombreAutor) {
+		HashSet<ObjectId> idsAutor = new HashSet<ObjectId>();
+		
+		//Obtengo el ObjectId del autor
+		FindIterable<Document> fitA = db.getCollection("autores").find(Filters.eq("nombre", nombreAutor)); 
+		Iterator<Document> itA = fitA.iterator();
+		while(itA.hasNext()) {
+			idsAutor.add(itA.next().getObjectId("_id"));
+		}
+		// Faltarían dos opciones más: autor nombre directamente y autro id 
+		FindIterable<Document> fitL = db.getCollection("libros").find(
+				Filters.or(
+					Filters.and(
+						Filters.eq("titulo", titulo), 
+						Filters.eq("autor.nombre", nombreAutor)
+					),
+					Filters.and(
+						Filters.eq("titulo", titulo), 
+						Filters.in("autor", idsAutor)
+					)
+				));
+		Iterator<Document> itL = fitL.iterator();
+		while(itL.hasNext()) {
+			System.out.println(itL.next().toString());
+		}
 	}
-
-	// Método auxiliar para imprimir libros de forma amigable
-	private static void imprimirLibro(Document libro) {
-	    // Manejo del campo "titulo"
-	    String titulo = libro.getString("titulo");
-
-	    // Manejo del campo "autor"
-	    Object autorObj = libro.get("autor");
-	    String autorStr;
-	    if (autorObj == null) {
-	        autorStr = "N/A";
-	    } else if (autorObj instanceof String) {
-	        autorStr = (String) autorObj;
-	    } else if (autorObj instanceof Integer) {
-	        autorStr = "Referencia de autor (ID): " + autorObj;
-	    } else {
-	        autorStr = autorObj.toString(); // Genérico para otros tipos de objetos
-	    }
-
-	    // Manejo del campo "genero"
-	    String genero = libro.getString("genero");
-
-	    // Manejo del campo "personajes"
-	    Object personajesObj = libro.get("personajes");
-	    String personajesStr;
-	    if (personajesObj == null) {
-	        personajesStr = "N/A";
-	    } else if (personajesObj instanceof String) {
-	        personajesStr = (String) personajesObj;
-	    } else if (personajesObj instanceof List) {
-	        @SuppressWarnings("unchecked")
-	        List<String> personajesList = (List<String>) personajesObj;
-	        personajesStr = String.join(", ", personajesList);
-	    } else {
-	        personajesStr = "N/A";
-	    }
-
-	    // Imprimir la información
-	    System.out.println("Título: " + (titulo != null ? titulo : "N/A"));
-	    System.out.println("Autor: " + autorStr);
-	    System.out.println("Género: " + (genero != null ? genero : "N/A"));
-	    System.out.println("Personajes: " + personajesStr);
-	    System.out.println("--------------------------");
-	}
+	
 
 
 
