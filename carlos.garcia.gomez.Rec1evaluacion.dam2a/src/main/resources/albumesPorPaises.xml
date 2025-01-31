@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<albumesPorPaises>
+    <pais codigo="EU">
+        <album anio="1983" artista="Kim Larsen">Midt om natten</album>
+        <album anio="1983" artista="Kim Larsen">Midt om natten</album>
+        <album anio="1985" artista="Simply Red">Picture book</album>
+        <album anio="1985" artista="Simply Red">Picture book</album>
+        <album anio="1995" artista="Savage Rose">Black angel</album>
+        <album anio="1995" artista="Savage Rose">Black angel</album>
+        <album anio="1996" artista="Andrea Bocelli">Romanza</album>
+        <album anio="1996" artista="Andrea Bocelli">Romanza</album>
+        <album anio="1997" artista="Eros Ramazzotti">Eros</album>
+        <album anio="1997" artista="Eros Ramazzotti">Eros</album>
+    </pais>
+    <pais codigo="USA">
+        <album anio="1982" artista="Dolly Parton">Greatest Hits</album>
+        <album anio="1982" artista="Dolly Parton">Greatest Hits</album>
+        <album anio="1985" artista="Bob Dylan">Empire Burlesque</album>
+        <album anio="1985" artista="Bob Dylan">Empire Burlesque</album>
+        <album anio="1987" artista="Percy Sledge">When a man loves a woman</album>
+        <album anio="1987" artista="Joe Cocker">Unchain my heart</album>
+        <album anio="1987" artista="Otis Redding">The dock of the bay</album>
+        <album anio="1987" artista="Joe Cocker">Unchain my heart</album>
+        <album anio="1987" artista="Otis Redding">The dock of the bay</album>
+        <album anio="1987" artista="Percy Sledge">When a man loves a woman</album>
+        <album anio="1997" artista="Will Smith">Big Willie style</album>
+        <album anio="1997" artista="Will Smith">Big Willie style</album>
+        <album anio="1999" artista="Many">1999 Grammy Nominees</album>
+        <album anio="1999" artista="Many">1999 Grammy Nominees</album>
+    </pais>
+    <pais codigo="Norway">
+        <album anio="1996" artista="Jorn Hoel">Soulsville</album>
+        <album anio="1996" artista="Jorn Hoel">Soulsville</album>
+    </pais>
+    <pais codigo="UK">
+        <album anio="1971" artista="Van Morrison">Tupelo Honey</album>
+        <album anio="1971" artista="Van Morrison">Tupelo Honey</album>
+        <album anio="1973" artista="Dr. Hook">Sylvias Mother</album>
+        <album anio="1973" artista="Dr. Hook">Sylvias Mother</album>
+        <album anio="1983" artista="Tina Turner">Private Dancer</album>
+        <album anio="1983" artista="Tina Turner">Private Dancer</album>
+        <album anio="1987" artista="T'Pau">Bridge of Spies</album>
+        <album anio="1987" artista="The Communards">Red</album>
+        <album anio="1987" artista="T'Pau">Bridge of Spies</album>
+        <album anio="1987" artista="The Communards">Red</album>
+        <album anio="1988" artista="Bonnie Tyler">Hide your heart</album>
+        <album anio="1988" artista="Sam Brown">Stop</album>
+        <album anio="1988" artista="Bonnie Tyler">Hide your heart</album>
+        <album anio="1988" artista="Sam Brown">Stop</album>
+        <album anio="1990" artista="Gary Moore">Still got the blues</album>
+        <album anio="1990" artista="Rod Stewart">Maggie May</album>
+        <album anio="1990" artista="Cat Stevens">The very best of</album>
+        <album anio="1990" artista="Gary Moore">Still got the blues</album>
+        <album anio="1990" artista="Cat Stevens">The very best of</album>
+        <album anio="1990" artista="Rod Stewart">Maggie May</album>
+        <album anio="1991" artista="Luciano Pavarotti">Pavarotti Gala Concert</album>
+        <album anio="1991" artista="Luciano Pavarotti">Pavarotti Gala Concert</album>
+        <album anio="1995" artista="Kenny Rogers">For the good times</album>
+        <album anio="1995" artista="Kenny Rogers">For the good times</album>
+        <album anio="1998" artista="Bee Gees">One night only</album>
+        <album anio="1998" artista="Bee Gees">One night only</album>
+    </pais>
+</albumesPorPaises>

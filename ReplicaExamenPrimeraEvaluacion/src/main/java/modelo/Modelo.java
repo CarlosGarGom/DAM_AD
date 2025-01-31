@@ -127,7 +127,60 @@ public class Modelo {
 			e.printStackTrace();
 		}
 	}
-	
+	/*public static void llenaTablasAlbumes() {
+	    System.out.println("En llenaTablasAlbumes");
+	    int numFila = 1; // Comienza en la fila 1 (después de los encabezados)
+	    Row fila = ConexionFicheroExcel.getInstancia().getHoja().getRow(numFila);
+	    
+	    try {
+	        PreparedStatement sentenciaArtista = ConexionMySQL.getInstancia().getCon()
+	                .prepareStatement("INSERT IGNORE INTO bandaArtistas (nombre) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+	        PreparedStatement sentenciaAlbum = ConexionMySQL.getInstancia().getCon()
+	                .prepareStatement("INSERT INTO albumes (titulo, bandaArtista, pais, discografica, precio, anio) VALUES (?, ?, ?, ?, ?, ?)");
+
+	        while (fila != null) {
+	            // Leer los datos de la fila
+	            String titulo = fila.getCell(1).getStringCellValue();
+	            String artista = fila.getCell(2).getStringCellValue();
+	            String pais = fila.getCell(3).getStringCellValue();
+	            String discografica = fila.getCell(4).getStringCellValue();
+	            double precio = fila.getCell(5).getNumericCellValue();
+	            int anio = (int) fila.getCell(6).getNumericCellValue();
+
+	            // Insertar en bandaArtistas y obtener el ID generado
+	            sentenciaArtista.setString(1, artista);
+	            sentenciaArtista.executeUpdate();
+	            ResultSet generatedKeys = sentenciaArtista.getGeneratedKeys();
+	            int idArtista = 0;
+	            if (generatedKeys.next()) {
+	                idArtista = generatedKeys.getInt(1);
+	            } else {
+	                // Si el artista ya existe, buscar su ID
+	                PreparedStatement sentenciaBuscaArtista = ConexionMySQL.getInstancia().getCon()
+	                        .prepareStatement("SELECT id_bandaArtista FROM bandaArtistas WHERE nombre = ?");
+	                sentenciaBuscaArtista.setString(1, artista);
+	                ResultSet resultArtista = sentenciaBuscaArtista.executeQuery();
+	                if (resultArtista.next()) {
+	                    idArtista = resultArtista.getInt(1);
+	                }
+	            }
+
+	            // Insertar en albumes
+	            sentenciaAlbum.setString(1, titulo);
+	            sentenciaAlbum.setInt(2, idArtista);
+	            sentenciaAlbum.setString(3, pais);
+	            sentenciaAlbum.setString(4, discografica);
+	            sentenciaAlbum.setDouble(5, precio);
+	            sentenciaAlbum.setInt(6, anio);
+	            System.out.println("Insertado álbum: " + sentenciaAlbum.executeUpdate());
+
+	            // Leer la siguiente fila
+	            fila = ConexionFicheroExcel.getInstancia().getHoja().getRow(++numFila);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}*/
 	public static void creaDocumentoXML_Ictus() {
 		Ictus icT;
 		try {
